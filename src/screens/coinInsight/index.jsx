@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, Dimensions } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Dimensions, TextInput } from "react-native";
 import CoinInsightHeader from "./components/CoinInsightHeader";
 import Coin from "../../../assets/data/crypto.json";
 import styles from "./styles";
@@ -24,12 +24,27 @@ const coinInsight = () => {
     prices,
   } = Coin;
 
+  const [coinValue, setCoinValue] = useState("1");
+  const [usdValue, setUsdValue] = useState(usd.toString());
+
   const percentageColor =
     price_change_percentage_24h < 0 ? "#ea3943" : "#16c784";
 
   const graphColor = usd > prices[0][1] ? "#16c784" : "#ea3943";
 
   const screenWidth = Dimensions.get("window").width;
+
+  const onChangeCoinValue = (value) => {
+    setCoinValue(value);
+    const floatValue = parseFloat(value) || 0;
+    setUsdValue((floatValue * usd).toString());
+  };
+
+  const onChangeUsdValue = (value) => {
+    setUsdValue(value);
+    const floatValue = parseFloat(value) || 0;
+    setCoinValue((floatValue / usd).toString());
+  };
 
   const formatPrice = (value) => {
     "worklet";
@@ -88,6 +103,27 @@ const coinInsight = () => {
               backgroundColor: graphColor,
             }}
           />
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", flex: 1 }}>
+            <Text style={{ color: "white" }}>{symbol.toUpperCase()}</Text>
+            <TextInput
+              style={styles.inputStyle}
+              value={coinValue}
+              keyboardType="numeric"
+              onChangeText={onChangeCoinValue}
+            />
+          </View>
+
+          <View style={{ flexDirection: "row", flex: 1 }}>
+            <Text style={{ color: "white" }}>USD</Text>
+            <TextInput
+              style={styles.inputStyle}
+              value={usdValue}
+              keyboardType="numeric"
+              onChangeText={onChangeUsdValue}
+            />
+          </View>
         </View>
       </ChartPathProvider>
     </View>

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { borderBottomColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
 const styles = StyleSheet.create({
   priceContainer: {
@@ -21,6 +22,16 @@ const styles = StyleSheet.create({
   nameStyle: {
     color: "white",
     fontSize: 15,
+  },
+  inputStyle: {
+    flex: 1,
+    height: 40,
+    margin: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
+    padding: 10,
+    fontSize: 16,
+    color: "white",
   },
 });
 
