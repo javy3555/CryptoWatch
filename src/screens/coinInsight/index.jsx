@@ -1,7 +1,12 @@
-import React, { useState } from "react";
-import { View, Text, Dimensions, TextInput } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Dimensions,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
 import CoinInsightHeader from "./components/CoinInsightHeader";
-import Coin from "../../../assets/data/crypto.json";
 import styles from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import {
@@ -10,8 +15,40 @@ import {
   ChartYLabel,
   ChartPathProvider,
 } from "@rainbow-me/animated-charts";
+import { useRoute } from "@react-navigation/native";
+import { getInsightCoinData } from "../../services/request";
+import { getCoinChart } from "../../services/request";
 
-const coinInsight = () => {
+const CoinInsight = () => {
+  const [coinValue, setCoinValue] = useState("1");
+  const [usdValue, setUsdValue] = useState("");
+  const [chartData, setChartData] = useState(null);
+  const [loading, setLoading] = useState("");
+  const [coinData, setCoinData] = useState(null);
+
+  const route = useRoute();
+  const {
+    params: { coinId },
+  } = route;
+
+  const fetchCoinData = async () => {
+    setLoading(true);
+    const fetchCoinData = await getInsightCoinData(coinId);
+    const fetchMarketData = await getCoinChart(coinId);
+    setCoinData(fetchCoinData);
+    setChartData(fetchMarketData);
+    setUsdValue(fetchCoinData.market_data.current_price.usd.toString());
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchCoinData();
+  }, []);
+
+  if (loading || !coinData || !chartData) {
+    return <ActivityIndicator size="large" />;
+  }
+
   const {
     image: { small },
     name,
@@ -21,28 +58,24 @@ const coinInsight = () => {
       current_price: { usd },
       price_change_percentage_24h,
     },
-    prices,
-  } = Coin;
+  } = coinData;
 
-  const [coinValue, setCoinValue] = useState("1");
-  const [usdValue, setUsdValue] = useState(usd.toString());
+  const { prices } = chartData;
 
   const percentageColor =
-    price_change_percentage_24h < 0 ? "#ea3943" : "#16c784";
-
+    price_change_percentage_24h < 0 ? "#ea3943" : "#16c784" || "white";
   const graphColor = usd > prices[0][1] ? "#16c784" : "#ea3943";
-
   const screenWidth = Dimensions.get("window").width;
 
   const onChangeCoinValue = (value) => {
     setCoinValue(value);
-    const floatValue = parseFloat(value) || 0;
+    const floatValue = parseFloat(value.replace(",", ".")) || 0;
     setUsdValue((floatValue * usd).toString());
   };
 
   const onChangeUsdValue = (value) => {
     setUsdValue(value);
-    const floatValue = parseFloat(value) || 0;
+    const floatValue = parseFloat(value.replace(",", ".")) || 0;
     setCoinValue((floatValue / usd).toString());
   };
 
@@ -74,9 +107,9 @@ const coinInsight = () => {
           </View>
           <View
             style={{
-              backgroundColor:
-                price_change_percentage_24h < 0 ? "#ea3943" : "#16c784",
-              padding: 5,
+              backgroundColor: percentageColor,
+              paddingHorizontal: 3,
+              paddingVertical: 8,
               borderRadius: 5,
               flexDirection: "row",
             }}
@@ -94,6 +127,7 @@ const coinInsight = () => {
         </View>
         <View>
           <ChartPath
+            strokeWidth={2}
             height={screenWidth / 2}
             stroke={graphColor}
             width={screenWidth}
@@ -130,4 +164,4 @@ const coinInsight = () => {
   );
 };
 
-export default coinInsight;
+export default CoinInsight;

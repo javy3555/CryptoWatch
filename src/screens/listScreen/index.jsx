@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import CoinItem from "../../components/CoinItem";
 import cryptocurrencies from "../../../assets/data/cryptocurrencies.json";
 
-const listScreen = () => {
+const ListScreen = () => {
   return (
     <FlatList
       data={cryptocurrencies}
@@ -12,4 +12,4 @@ const listScreen = () => {
   );
 };
 
-export default listScreen;
+export default ListScreen;
