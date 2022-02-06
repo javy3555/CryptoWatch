@@ -82,9 +82,13 @@ const CoinInsight = () => {
   const formatPrice = (value) => {
     "worklet";
     if (value == "") {
-      return `$${usd.toFixed(2)}`;
+      return `$${usd.toLocaleString(undefined, {
+        maximumFractionDigits: 2,
+      })}`;
     }
-    return `$${parseFloat(value).toFixed(2)}`;
+    return `$${parseFloat(value).toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+    })}`;
   };
 
   return (

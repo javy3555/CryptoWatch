@@ -71,7 +71,12 @@ const CoinItem = ({ marketCoin }) => {
         </View>
       </View>
       <View style={{ marginLeft: "auto", alignItems: "flex-end" }}>
-        <Text style={styles.title}>{current_price.toFixed(2)}</Text>
+        <Text style={styles.title}>
+          $
+          {current_price.toLocaleString(undefined, {
+            maximumFractionDigits: 2,
+          })}
+        </Text>
         <Text style={{ color: "white" }}>
           MCap {MarketCapFormatter(market_cap)}
         </Text>
