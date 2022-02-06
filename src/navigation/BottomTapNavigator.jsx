@@ -1,10 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/ListScreen";
-import CoinInsight from "../screens/CoinInsight";
+import Portfolio from "../screens/Portfolio";
 import WatchList from "../screens/WatchList";
 import { Entypo } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -37,6 +37,19 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ focused, color }) => (
             <MaterialIcons
               name="favorite"
+              size={focused ? 30 : 24}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Portfolio"
+        component={Portfolio}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <FontAwesome5
+              name="briefcase"
               size={focused ? 30 : 24}
               color={color}
             />

@@ -50,6 +50,7 @@ const CoinInsight = () => {
   }
 
   const {
+    id,
     image: { small },
     name,
     symbol,
@@ -100,6 +101,7 @@ const CoinInsight = () => {
         }}
       >
         <CoinInsightHeader
+          coinId={id}
           image={small}
           symbol={symbol}
           marketCapRank={market_cap_rank}
@@ -125,7 +127,7 @@ const CoinInsight = () => {
               style={{ alignSelf: "center", marginRight: 5 }}
             />
             <Text style={styles.priceChangeStyle}>
-              {price_change_percentage_24h.toFixed(2)}%
+              {price_change_percentage_24h?.toFixed(2)}%
             </Text>
           </View>
         </View>
