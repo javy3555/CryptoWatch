@@ -22,17 +22,17 @@ const CoinItem = ({ marketCoin }) => {
     price_change_percentage_24h < 0 ? "#ea3943" : "#16c784" || "white";
 
   const MarketCapFormatter = (marketCap) => {
-    if (marketCap > 1_000_000_000_000) {
-      return `${Math.floor(marketCap / 1_000_000_000_000)} T`;
+    if (marketCap > 1e12) {
+      return `${(marketCap / 1e12).toFixed(3)} T`;
     }
-    if (marketCap > 1_000_000_000) {
-      return `${Math.floor(marketCap / 1_000_000_000)} B`;
+    if (marketCap > 1e9) {
+      return `${(marketCap / 1e9).toFixed(3)} B`;
     }
-    if (marketCap > 1_000_000) {
-      return `${Math.floor(marketCap / 1_000_000_000)} M`;
+    if (marketCap > 1e6) {
+      return `${(marketCap / 1e6).toFixed(3)} M`;
     }
-    if (marketCap > 1_000) {
-      return `${Math.floor(marketCap / 1_000_000_000)} K`;
+    if (marketCap > 1e3) {
+      return `${(marketCap / 1e3).toFixed(3)} K`;
     }
     return marketCap;
   };
@@ -50,7 +50,7 @@ const CoinItem = ({ marketCoin }) => {
         source={{
           uri: image,
         }}
-        style={{ height: 30, width: 30, marginRight: 10 }}
+        style={{ height: 30, width: 30, marginRight: 10, alignSelf: "center" }}
       />
       <View>
         <Text style={styles.title}>{name}</Text>

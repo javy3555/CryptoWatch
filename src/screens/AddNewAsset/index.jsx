@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import SearchableDropdown from "react-native-searchable-dropdown";
 import styles from "./styles";
 import { useRecoilState } from "recoil";
@@ -94,47 +101,54 @@ const AddNewAsset = () => {
       />
       {selectedCoin && (
         <>
-          <View style={styles.boughtQuantityContainer}>
-            <View style={{ flexDirection: "row" }}>
-              <TextInput
-                style={{ color: "white", fontSize: 90 }}
-                value={boughtAssetQuantity}
-                placeholder="0"
-                onChangeText={setBoughtAssetQuantity}
-              />
-              <Text style={styles.ticker}>
-                {selectedCoin.symbol.toUpperCase()}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+            keyboardVerticalOffset={90}
+          >
+            <View style={styles.boughtQuantityContainer}>
+              <View style={{ flexDirection: "row" }}>
+                <TextInput
+                  style={{ color: "white", fontSize: 90 }}
+                  value={boughtAssetQuantity}
+                  placeholder="0"
+                  onChangeText={setBoughtAssetQuantity}
+                  keyboardType="numeric"
+                />
+                <Text style={styles.ticker}>
+                  {selectedCoin.symbol.toUpperCase()}
+                </Text>
+              </View>
+              <Text style={styles.pricePerCoin}>
+                {" "}
+                $
+                {selectedCoin.market_data.current_price.usd.toLocaleString(
+                  undefined,
+                  {
+                    maximumFractionDigits: 2,
+                  }
+                )}{" "}
+                per coin
               </Text>
             </View>
-            <Text style={styles.pricePerCoin}>
-              {" "}
-              $
-              {selectedCoin.market_data.current_price.usd.toLocaleString(
-                undefined,
-                {
-                  maximumFractionDigits: 2,
-                }
-              )}{" "}
-              per coin
-            </Text>
-          </View>
-          <Pressable
-            style={{
-              ...styles.buttonContainer,
-              backgroundColor: isQuantityEntered() ? "#303030" : "#4169E1",
-            }}
-            onPress={onAddNewAsset}
-            disabled={isQuantityEntered()}
-          >
-            <Text
+            <Pressable
               style={{
-                ...styles.buttonText,
-                color: isQuantityEntered() ? "grey" : "white",
+                ...styles.buttonContainer,
+                backgroundColor: isQuantityEntered() ? "#303030" : "#4169E1",
               }}
+              onPress={onAddNewAsset}
+              disabled={isQuantityEntered()}
             >
-              Add New Asset
-            </Text>
-          </Pressable>
+              <Text
+                style={{
+                  ...styles.buttonText,
+                  color: isQuantityEntered() ? "grey" : "white",
+                }}
+              >
+                Add New Asset
+              </Text>
+            </Pressable>
+          </KeyboardAvoidingView>
         </>
       )}
     </View>

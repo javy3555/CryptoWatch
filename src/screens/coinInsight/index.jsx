@@ -18,6 +18,7 @@ import {
 import { useRoute } from "@react-navigation/native";
 import { getInsightCoinData } from "../../services/request";
 import { getCoinChart } from "../../services/request";
+import FilterComponent from "./components/FilterComponent";
 
 const CoinInsight = () => {
   const [coinValue, setCoinValue] = useState("1");
@@ -25,6 +26,7 @@ const CoinInsight = () => {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState("");
   const [coinData, setCoinData] = useState(null);
+  const [selectedRange, setSelectedRange] = useState("1");
 
   const route = useRoute();
   const {
@@ -34,15 +36,22 @@ const CoinInsight = () => {
   const fetchCoinData = async () => {
     setLoading(true);
     const fetchCoinData = await getInsightCoinData(coinId);
-    const fetchMarketData = await getCoinChart(coinId);
     setCoinData(fetchCoinData);
-    setChartData(fetchMarketData);
     setUsdValue(fetchCoinData.market_data.current_price.usd.toString());
     setLoading(false);
   };
 
+  const fetchMarketCoinData = async (selectedRangeValue) => {
+    const fetchedCoinMarketData = await getCoinChart(
+      coinId,
+      selectedRangeValue
+    );
+    setChartData(fetchedCoinMarketData);
+  };
+
   useEffect(() => {
     fetchCoinData();
+    fetchMarketCoinData(1);
   }, []);
 
   if (loading || !coinData || !chartData) {
@@ -82,14 +91,25 @@ const CoinInsight = () => {
 
   const formatPrice = (value) => {
     "worklet";
-    if (value == "") {
+    if (value === "") {
+      if (usd < 1) {
+        return `$${usd}`;
+      }
       return `$${usd.toLocaleString(undefined, {
         maximumFractionDigits: 2,
       })}`;
     }
+    if (usd < 1) {
+      return `$${parseFloat(value)}`;
+    }
     return `$${parseFloat(value).toLocaleString(undefined, {
       maximumFractionDigits: 2,
     })}`;
+  };
+
+  const onSelectedRangeChange = (selectedRangeValue) => {
+    setSelectedRange(selectedRangeValue);
+    fetchMarketCoinData(selectedRangeValue);
   };
 
   return (
@@ -97,7 +117,6 @@ const CoinInsight = () => {
       <ChartPathProvider
         data={{
           points: prices.map(([x, y]) => ({ x, y })),
-          smoothingStrategy: "bezier",
         }}
       >
         <CoinInsightHeader
@@ -144,7 +163,39 @@ const CoinInsight = () => {
             }}
           />
         </View>
-        <View style={{ flexDirection: "row" }}>
+        <View style={styles.filerContainer}>
+          <FilterComponent
+            filterDay="1"
+            filterText="24h"
+            selectedRange={selectedRange}
+            setSelectedRange={onSelectedRangeChange}
+          />
+          <FilterComponent
+            filterDay="7"
+            filterText="7d"
+            selectedRange={selectedRange}
+            setSelectedRange={onSelectedRangeChange}
+          />
+          <FilterComponent
+            filterDay="30"
+            filterText="30d"
+            selectedRange={selectedRange}
+            setSelectedRange={onSelectedRangeChange}
+          />
+          <FilterComponent
+            filterDay="360"
+            filterText="1y"
+            selectedRange={selectedRange}
+            setSelectedRange={onSelectedRangeChange}
+          />
+          <FilterComponent
+            filterDay="max"
+            filterText="All"
+            selectedRange={selectedRange}
+            setSelectedRange={onSelectedRangeChange}
+          />
+        </View>
+        <View style={{ flexDirection: "row", marginTop: 20 }}>
           <View style={{ flexDirection: "row", flex: 1 }}>
             <Text style={{ color: "white" }}>{symbol.toUpperCase()}</Text>
             <TextInput

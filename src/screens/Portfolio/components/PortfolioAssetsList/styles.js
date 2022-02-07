@@ -3,18 +3,18 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   currentBalance: {
     color: "white",
-    fontWeight: "600",
+    fontWeight: "700",
     fontSize: 15,
+    marginBottom: 5,
   },
   currentBalanceValue: {
     color: "white",
-    fontSize: 40,
+    fontSize: 37,
     fontWeight: "700",
     letterSpacing: 1,
   },
   valueChange: {
-    color: "#16c784",
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "600",
   },
   percentageChange: {
@@ -27,12 +27,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 10,
-    marginBottom: 5,
+    marginBottom: 10,
     marginHorizontal: 10,
   },
   priceChangePercenterContainer: {
     flexDirection: "row",
-    backgroundColor: "#16c784",
     paddingHorizontal: 3,
     paddingVertical: 8,
     borderRadius: 5,
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#4169E1",
     padding: 10,
     alignItems: "center",
-    marginVertical: 25,
+    marginVertical: 40,
     marginHorizontal: 25,
     borderRadius: 5,
   },
