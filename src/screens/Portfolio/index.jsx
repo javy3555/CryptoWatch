@@ -1,10 +1,16 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { View, Text } from "react-native";
 import PortfolioAssetsList from "../Portfolio/components/PortfolioAssetsList";
 const Portfolio = () => {
   return (
     <View>
-      <PortfolioAssetsList />
+      <Suspense
+        fallback={
+          <Text style={{ color: "white" }}>Loading Please Wait :)</Text>
+        }
+      >
+        <PortfolioAssetsList />
+      </Suspense>
     </View>
   );
 };
