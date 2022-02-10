@@ -1,7 +1,7 @@
 # Cryptowatch
 ## Live Cryptocurrency MarketData
 
-Cryptowatch - The ultimate crypto tracker app that allows you to track, convert cryptocurrency and sync your entire crypto portfolio in a single app.
+Cryptowatch - The ultimate crypto tracker app that allows you to track, convert cryptocurrency, and sync your entire crypto portfolio in a single app.
 
 ## Features
 
